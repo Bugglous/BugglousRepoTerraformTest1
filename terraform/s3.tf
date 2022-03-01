@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "b" {
-  bucket = "TerraBugg-training-bucket-62289"
+  bucket = "bugglous-terraform"
 
   tags = {
     Name        = "training-bucket"
@@ -7,7 +7,7 @@ resource "aws_s3_bucket" "b" {
   }
 }
 
-resource "aws_s3_bucket_acl" "TerraBugg1" {
+resource "aws_s3_bucket_acl" "s3-buggglous" {
   bucket = aws_s3_bucket.b.id
   acl    = "private"
 }
