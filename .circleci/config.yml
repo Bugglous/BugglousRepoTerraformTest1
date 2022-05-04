@@ -1,18 +1,21 @@
-version: 2
+version: 2.1
 
-jobs:
-  plan-apply:
-    working_directory: /tmp/project
-    docker:
-      - image: docker.mirror.hashicorp.services/hashicorp/terraform:light
-    steps:
-      - checkout
-      - run:
-          name: terraform init & plan
-          command: |
-            terraform init -input=false
-            terraform plan -out tfapply -var-file variables.tfvars
-      - persist_to_workspace:
-          root: .
-          paths:
-            - .
+orbs:
+  slack: circleci/slack@4.1
+
+workflows:
+  on-hold-example:
+    jobs:
+      - my_test_job
+      - slack/on-hold:
+          context: slack-secrets
+          requires:
+            - my_test_job
+      - pause_workflow:
+          requires:
+            - my_test_job
+            - slack/on-hold
+          type: approval
+      - my_deploy_job:
+          requires:
+            - pause_workflow
