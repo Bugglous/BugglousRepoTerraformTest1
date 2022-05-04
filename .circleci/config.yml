@@ -12,8 +12,8 @@ workflows:
           requires:
             - my_test_job
       - pause_workflow:
+          
           requires:
-            - my_test_job
             - slack/on-hold
           type: approval
       - my_deploy_job:
