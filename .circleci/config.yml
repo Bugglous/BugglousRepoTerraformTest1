@@ -10,17 +10,16 @@ jobs:
       - terraform/install:
           arch: amd64
           os: linux
-          terraform_version: 0.14.2
+          terraform_version: 3.0.1
       - terraform/fmt:
           path: .
       - terraform/validate:
           path: .
       - terraform/init:
           backend: true
-          backend_config_file: backend.hcl
-          path: .
+          
       - terraform/plan:
-          backend_config_file: backend.hcl
+          backend_config_file: buggloussstate
           path: .
       - terraform/apply:
           backend_config_file: backend.hcl
@@ -31,7 +30,7 @@ jobs:
 workflows:
   single-job-lifecycle:
     jobs:
-      - single-job-lifecycle
+      - Bugglous-tries-circleci
 
 
      
