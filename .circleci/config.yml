@@ -10,9 +10,9 @@ jobs:
     executor: aws-cli/default
     steps:
       - checkout
-      - aws-cli/setup: 
+      - aws-cli/setup:
           profile-name: default
-      - run: 
+      - run:
           command: |
            aws --version
   init-plan:
@@ -20,8 +20,8 @@ jobs:
     executor: docker-executor 
     steps:
       - checkout
-      - aws-cli/setup: 
-           profile-name: default
+      # - aws-cli/setup:
+      #     profile-name: default
       - run:
           name: Install Terraform
           command: |
@@ -43,6 +43,7 @@ jobs:
     docker: 
       - image: docker.mirror.hashicorp.services/hashicorp/terraform:light 
     steps:
+      - checkout
       - attach_workspace:
           at: .
       - run:
@@ -54,6 +55,7 @@ jobs:
     docker: 
       - image: docker.mirror.hashicorp.services/hashicorp/terraform:light
     steps:
+      - checkout
       - attach_workspace:
           at: .
       - run:
@@ -63,8 +65,9 @@ jobs:
 workflows:
     deploy:
       jobs:
-        - init-plan:
+        - aws-cli-install:
             context: AWScreds
+        - init-plan
         - hold:
             type: approval
             requires:
