@@ -63,7 +63,8 @@ jobs:
 workflows:
     deploy:
       jobs:
-        - init-plan
+        - init-plan:
+            context: AWScreds
         - hold:
             type: approval
             requires:
