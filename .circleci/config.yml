@@ -25,5 +25,39 @@ jobs:
             terraform init -input=false
             terraform fmt .
             terraform plan -input=false
-
-     
+  apply:
+    working_directory: /terraform
+    docker: 
+      - image: docker.mirror.hashicorp.services/hashicorp/terraform:light 
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+           name: terraform apply
+           command: |
+            terraform apply -auto-approve
+  destroy:
+    working_directory: /terraform
+    docker: 
+      - image: docker.mirror.hashicorp.services/hashicorp/terraform:light
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+           name: terraform destroy
+           command: |
+            terraform destroy -auto-approve
+workflows:
+    deploy:
+      jobs:
+        - init-plan
+        - hold:
+            type: approval
+            requires:
+              - init-plan
+        - apply:
+            requires:
+              - hold
+        - destroy:
+            requires:
+              - hold
