@@ -1,4 +1,4 @@
-version: '2.1'
+version: 2.1
 orbs: 
   terraform: circleci/terraform@3.0.1
 jobs:
@@ -30,7 +30,7 @@ jobs:
 workflows:
   single-job-lifecycle:
     jobs:
-      - Bugglous-tries-circleci
+      - single-job-lifecycle
 
 
      
