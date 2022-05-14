@@ -44,9 +44,11 @@ jobs:
       - attach_workspace:
           at: .
       - run:
-           name: terraform apply
-           command: |
-            terraform apply -auto-approve
+          name: Terraform Init & Plan
+          command: |
+             cd terraform
+             terraform init -input=false
+             terraform plan -out tf.plan
   destroy:
     working_directory: /terraform
     docker: 
@@ -70,7 +72,6 @@ workflows:
               - init-plan
         - apply:
             requires:
-            command: terraform apply --auto-approve tf.plan
               - hold
         - destroy:
             requires:
