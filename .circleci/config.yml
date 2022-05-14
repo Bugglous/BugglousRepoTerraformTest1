@@ -6,17 +6,22 @@ executors:
     docker:
       - image: cimg/python:3.9.6
 jobs:
-  init-plan:
-    working_directory: ~/project/terraform
-    executor: docker-executor 
+  aws-cli-install:
+    executor: aws-cli/default
     steps:
       - checkout
       - aws-cli/setup:
           profile-name: default
       - run:
-          name: Check aws version
           command: |
-            aws --version
+           aws --version
+  init-plan:
+    working_directory: ~/project/terraform
+    executor: docker-executor 
+    steps:
+      - checkout
+      # - aws-cli/setup:
+      #     profile-name: default
       - run:
           name: Install Terraform
           command: |
@@ -60,8 +65,9 @@ jobs:
 workflows:
     deploy:
       jobs:
-        - init-plan:
+        - aws-cli-install:
             context: AWScreds
+        - init-plan
         - hold:
             type: approval
             requires:
