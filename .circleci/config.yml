@@ -1,3 +1,5 @@
+
+   
 version: 2.1
 orbs: 
   aws-cli: circleci/aws-cli@3.1.1
@@ -6,22 +8,17 @@ executors:
     docker:
       - image: cimg/python:3.9.6
 jobs:
-  aws-cli-install:
-    executor: aws-cli/default
-    steps:
-      - checkout
-      - aws-cli/setup:
-          profile-name: default
-      - run:
-          command: |
-           aws --version
   init-plan:
     working_directory: ~/project/terraform
     executor: docker-executor 
     steps:
       - checkout
-      # - aws-cli/setup:
-      #     profile-name: default
+      - aws-cli/setup:
+          profile-name: default
+      - run:
+          name: Check aws version
+          command: |
+            aws --version
       - run:
           name: Install Terraform
           command: |
@@ -65,15 +62,14 @@ jobs:
 workflows:
     deploy:
       jobs:
-        - aws-cli-install:
+        - init-plan:
             context: AWScreds
-        - init-plan
         - hold:
             type: approval
             requires:
               - init-plan
         - apply:
-            requires: 
+            requires:
               - hold
         - destroy:
             requires:
