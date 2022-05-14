@@ -69,6 +69,7 @@ workflows:
         - apply:
             requires:
               - init-plan
+            context: AWScreds
               - hold
         - destroy:
             requires:
