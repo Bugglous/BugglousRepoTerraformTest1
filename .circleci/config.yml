@@ -73,8 +73,7 @@ workflows:
             requires:
               - init-plan
         - apply:
-            requires:
-              - init-plan  
+            requires: 
               - hold
         - destroy:
             requires:
