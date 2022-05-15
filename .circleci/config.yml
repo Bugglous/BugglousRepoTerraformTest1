@@ -72,6 +72,8 @@ workflows:
         - apply:
             requires:
               - hold
+            context:
+              - AWScreds  
         - destroy:
             requires:
               - hold
