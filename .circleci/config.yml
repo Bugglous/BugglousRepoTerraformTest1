@@ -81,3 +81,12 @@ workflows:
               - destroy approval
            context:
             - AWScreds
+Eradicate:
+    triggers:
+      - schedule:
+          cron: "0 0,8,16 * * *"
+        
+    jobs:
+      - eradicate:
+          context:
+            - AWScreds         
