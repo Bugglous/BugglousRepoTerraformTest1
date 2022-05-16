@@ -74,6 +74,10 @@ workflows:
               - hold
             context:
               - AWScreds  
+        - destroy approval:
+            type: approval
         - destroy:
-            requires:
-              - hold
+           requires:
+              - destroy approval
+           context:
+            - AWScreds
